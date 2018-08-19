@@ -2,9 +2,9 @@ const express = require('express');     // bring the package 'express'
 
 const app = express();
 
-app.use((req, res) => {
+app.use((req, res, next) => {
     console.log('This is a middleware function');
-    // next();      // call next middleware functions
+    next();      // call next middleware functions or send reponse
 })
 
 // routes
