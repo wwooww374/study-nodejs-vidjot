@@ -13,6 +13,10 @@ mongoose.connect('mongodb://localhost/study-nodejs-vidjot', {
     console.log(err);
 });
 
+// load Idea model
+require('./models/Idea');
+const Idea = mongoose.model('ideas');
+
 // express-handlebars middleware
 app.engine('handlebars', exphbs({
     defaultLayout: 'main'
