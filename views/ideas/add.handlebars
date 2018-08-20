@@ -3,7 +3,8 @@
     <form action="/ideas" method="post">
         <div class="form-group">
             <label for="title">제목</label>
-            <input type="text" class="form-control" name="title">
+            <!-- client-side form validation !-->
+            <input type="text" class="form-control" name="title" required />
         </div>
         <div class="form-group">
             <label for="details">설명</label>
