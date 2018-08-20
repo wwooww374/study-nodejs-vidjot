@@ -1,7 +1,17 @@
-const express = require('express');     // bring the package 'express'
-var exphbs  = require('express-handlebars');
+const express = require('express');
+const exphbs  = require('express-handlebars');
+const mongoose = require('mongoose');
 
 const app = express();
+
+// connect to mongoose
+mongoose.connect('mongodb://localhost/study-nodejs-vidjot', {
+    useNewUrlParser: true
+}).then(() => {
+    console.log('MongoDB connected...');
+}).catch(err => {
+    console.log(err);
+});
 
 // express-handlebars middleware
 app.engine('handlebars', exphbs({
