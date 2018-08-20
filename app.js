@@ -1,19 +1,24 @@
 const express = require('express');     // bring the package 'express'
+var exphbs  = require('express-handlebars');
 
 const app = express();
 
-app.use((req, res, next) => {
-    console.log('This is a middleware function');
-    next();      // call next middleware functions or send reponse
-})
+// express-handlebars middleware
+app.engine('handlebars', exphbs({
+    defaultLayout: 'main'
+}));
+app.set('view engine', 'handlebars');
 
 // routes
 app.get('/', (req, res) => {
-    res.send('INDEX');
+    const title = 'Welcome~';
+    res.render('index', {
+        title: title
+    });
 });
 
 app.get('/about', (req, res) => {
-    res.send('ABOUT');
+    res.render('about');
 });
 
 
