@@ -1,6 +1,7 @@
 const express = require('express');
 const exphbs  = require('express-handlebars');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -23,6 +24,10 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
+// body-parser middleware
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 // routes
 app.get('/', (req, res) => {
     const title = 'Welcome~';
@@ -37,6 +42,23 @@ app.get('/about', (req, res) => {
 
 app.get('/ideas/add', (req, res) => {
     res.render('ideas/add')
+});
+
+app.post('/ideas', (req, res) => {
+    let errors = [];
+
+    // access the request object by 'body-parser' middleware
+    if(!req.body.title) {
+        errors.push({text: '제목을 입력하세요'});
+    }
+
+    if(errors.length > 0){
+        res.render('ideas/add', {
+            errors: errors,
+        });
+    } else {
+        res.send('passed');
+    }
 });
 
 
