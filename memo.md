@@ -42,3 +42,9 @@ Middleware functions can perform the following tasks:
 - Make changes to the request and the response objects.
 - End the request-response cycle.
 - Call the next middleware function in the stack by `next();`
+
+
+## template engine choice - [express-handlebars](https://www.npmjs.com/package/express-handlebars)
+- It supports the concept of "layout".
+- It supports the concpet of "partials" via existing Handlebars' partials mechanism.
+`{{> foo/bar}}` loads the file `views/partials/foo/bar.handlebars`
