@@ -3,22 +3,22 @@
         <div class="card card-body">
             <img class="logo" src="/img/jj.jpeg">
             <h3 class="text-center">회원가입</h3>
-            <form action="">
+            <form action="/users/register" method="post">
                 <div class="form-group">
                     <label for="name">이름</label>
-                    <input type="text" class="form-control" name="name"required/>
+                    <input type="text" class="form-control" name="name" value="{{name}}" required/>
                 </div>
                 <div class="form-group">
                     <label for="email">이메일</label>
-                    <input type="email" class="form-control" name="email" required/>
+                    <input type="email" class="form-control" name="email" value="{{email}}" required/>
                 </div>
                 <div class="form-group">
                     <label for="password">비밀번호</label>
-                    <input type="password" class="form-control" name="password" required/>
+                    <input type="password" class="form-control" name="password" value="{{password}}" required/>
                 </div>
                 <div class="form-group">
-                    <label for="password-confirm">비밀번호 확인</label>
-                    <input type="password" class="form-control" name="password-confirm" required/>
+                    <label for="password_confirm">비밀번호 확인</label>
+                    <input type="password" class="form-control" name="password_confirm" value="{{password_confirm}}" required/>
                 </div>
                 <button type="submit" class="btn btn-primary">회원가입</button>
             </form>
