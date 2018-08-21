@@ -41,6 +41,8 @@ router.post('/', (req, res) => {
     if(errors.length > 0){
         res.render('ideas/add', {
             errors: errors,
+            title: req.body.title,
+            details: req.body.details
         });
     } else {
         const newUser = {
