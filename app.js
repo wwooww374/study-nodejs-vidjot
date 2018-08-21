@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
+const path = require('path');
 
 const app = express();
 
@@ -50,6 +51,9 @@ app.use(function(req, res, next) {
     res.locals.error = req.flash('error');
     next();
 });
+
+// set 'public' folder to static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
 app.get('/', (req, res) => {
