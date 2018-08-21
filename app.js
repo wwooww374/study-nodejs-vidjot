@@ -3,6 +3,8 @@ const exphbs  = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const app = express();
 
@@ -31,6 +33,23 @@ app.use(bodyParser.json())
 
 // method-override middleware
 app.use(methodOverride('_method'));
+
+// express-session middleware
+app.use(session({
+    secret: 'cute cats',
+    resave: true,
+    saveUninitialized: true,
+}));
+
+app.use(flash());
+
+// global variables
+app.use(function(req, res, next) {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    next();
+});
 
 // routes
 app.get('/', (req, res) => {
@@ -88,6 +107,7 @@ app.post('/ideas', (req, res) => {
         new Idea(newUser)
             .save()
             .then(idea => {
+                req.flash('success_msg', '새 아이디어가 등록되었습니다');
                 res.redirect('/ideas');
             });
     }
@@ -101,6 +121,7 @@ app.put('/ideas/:id', (req, res) => {
         idea.details = req.body.details;
         idea.save()
             .then(idea => {
+                req.flash('success_msg', '아이디어가 수정되었습니다');
                 res.redirect('/ideas');
             });
     });
@@ -110,6 +131,7 @@ app.delete('/ideas/:id', (req, res) => {
     Idea.remove({
         _id: req.params.id
     }).then(() => {
+        req.flash('success_msg', '아이디어가 삭제되었습니다');
         res.redirect('/ideas');
     });
 });
