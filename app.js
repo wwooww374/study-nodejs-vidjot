@@ -8,6 +8,10 @@ const session = require('express-session');
 
 const app = express();
 
+// load routes
+const ideas = require('./routes/ideas');
+const users = require('./routes/users');
+
 // connect to mongoose
 mongoose.connect('mongodb://localhost/study-nodejs-vidjot', {
     useNewUrlParser: true
@@ -16,10 +20,6 @@ mongoose.connect('mongodb://localhost/study-nodejs-vidjot', {
 }).catch(err => {
     console.log(err);
 });
-
-// load Idea model
-require('./models/Idea');
-const Idea = mongoose.model('ideas');
 
 // express-handlebars middleware
 app.engine('handlebars', exphbs({
@@ -63,78 +63,10 @@ app.get('/about', (req, res) => {
     res.render('about');
 });
 
-app.get('/ideas', (req, res) => {
-    Idea.find({})
-        .sort({date:'desc'})
-        .then(ideas => {
-            res.render('ideas/index', {
-                ideas: ideas
-            });
-        });
-});
 
-app.get('/ideas/add', (req, res) => {
-    res.render('ideas/add')
-});
-
-app.get('/ideas/edit/:id', (req, res) => {
-    Idea.findOne({
-        _id: req.params.id
-    }).then(idea => {
-        res.render('ideas/edit', {
-            idea: idea
-        });
-    });
-});
-
-app.post('/ideas', (req, res) => {
-    let errors = [];
-
-    // access the request object by 'body-parser' middleware
-    if(!req.body.title) {
-        errors.push({text: '제목을 입력하세요'});
-    }
-
-    if(errors.length > 0){
-        res.render('ideas/add', {
-            errors: errors,
-        });
-    } else {
-        const newUser = {
-            title: req.body.title,
-            details: req.body.details
-        }
-        new Idea(newUser)
-            .save()
-            .then(idea => {
-                req.flash('success_msg', '새 아이디어가 등록되었습니다');
-                res.redirect('/ideas');
-            });
-    }
-});
-
-app.put('/ideas/:id', (req, res) => {
-    Idea.findOne({
-        _id: req.params.id
-    }).then(idea => {
-        idea.title = req.body.title;
-        idea.details = req.body.details;
-        idea.save()
-            .then(idea => {
-                req.flash('success_msg', '아이디어가 수정되었습니다');
-                res.redirect('/ideas');
-            });
-    });
-});
-
-app.delete('/ideas/:id', (req, res) => {
-    Idea.remove({
-        _id: req.params.id
-    }).then(() => {
-        req.flash('success_msg', '아이디어가 삭제되었습니다');
-        res.redirect('/ideas');
-    });
-});
+// user routes
+app.use('/ideas', ideas);
+app.use('/users', users);
 
 
 const port = 5000;
