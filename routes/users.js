@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); // for password hashing at registration
+const passport = require('passport');
 
 // load User model
 require('../models/User');
@@ -15,6 +16,23 @@ router.get('/register', (req, res) => {
     res.render('users/register');
 });
 
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success_msg', '로그아웃 되었습니다');
+    res.redirect('/users/login');
+});
+
+// login form
+router.post('/login', (req, res, next) => {
+    // connect to local strategy
+    passport.authenticate('local', {
+        successRedirect: '/ideas',
+        failureRedirect: '/users/login',
+        failureFlash: true
+    })(req, res, next);
+});
+
+// registration form
 router.post('/register', (req, res) => {
     // password validation check
     let errors = [];
