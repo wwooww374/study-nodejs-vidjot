@@ -3,16 +3,17 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); // for password hashing at registration
 const passport = require('passport');
+const {ensureNotAuthenticated} = require('../helpers/auth');
 
 // load User model
 require('../models/User');
 const User = mongoose.model('users');
 
-router.get('/login', (req, res) => {
+router.get('/login', ensureNotAuthenticated, (req, res) => {
     res.render('users/login');
 });
 
-router.get('/register', (req, res) => {
+router.get('/register', ensureNotAuthenticated, (req, res) => {
     res.render('users/register');
 });
 
