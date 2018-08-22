@@ -8,7 +8,7 @@ require('../models/Idea');
 const Idea = mongoose.model('ideas');
 
 router.get('/', ensureAuthenticated, (req, res) => {
-    Idea.find({})
+    Idea.find({user: req.user.id})
         .sort({date:'desc'})
         .then(ideas => {
             res.render('ideas/index', {
@@ -48,7 +48,8 @@ router.post('/', (req, res) => {
     } else {
         const newUser = {
             title: req.body.title,
-            details: req.body.details
+            details: req.body.details,
+            user: req.user.id
         }
         new Idea(newUser)
             .save()
